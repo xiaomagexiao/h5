@@ -1,0 +1,79 @@
+<#include "mobilebaseheader.html" />
+<title>郭雷涛项目的实际使用情况</title>
+<link href="${i_c_resroot}/training/mobile/css/lib_m.css" rel="stylesheet" type="text/css">
+<link href="${i_c_resroot}/training/mobile/css/style.css" rel="stylesheet" type="text/css">
+<link href="${i_c_resroot}/training/mobile/css/scrollbar.css" rel="stylesheet" type="text/css">
+<link href="${i_c_resroot}/training/mobile/css/iconfont/iconfont.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="${i_c_resroot}/training/mobile/scripts/require.js"></script>
+
+<script type="text/javascript">
+	require.config({
+		baseUrl : "${i_c_resroot}/training/mobile/scripts",
+		paths : {
+			"jquery" : "jquery-1.10.2.min",
+			"domReady" : "domReady",
+			"IScroll" : "iscroll-probe"
+		},
+		shim : {
+			"IScroll" : {
+				exports : 'IScroll'
+			},
+			"tina" : {
+				exports : "tina"
+			}
+		}
+	});
+
+	define(
+			"myApi",
+			[ "tina" ],
+			function() {
+				return {
+					openlink : function(url, title) {
+						//alert('openlink='+url);
+						//window.location.href=url;
+						bridge.invoke('openview', {
+							'link' : url,
+							'title' : title
+						}, function(response) {
+							if (response.result != 1) {
+								alert(response.result);
+							}
+						});
+
+					},
+					openCourse : function(courseId, img, title) {
+						//alert('courseId='+courseId+",img="+img);
+						bridge.invoke('opencourse', {
+							'courseId' : courseId,
+							'imageUrl' : img,
+							'title' : title
+						}, null);
+					},
+					//loginType : "5123eedd71264c6f8e012f084179f5c1",
+					loginType : bridge.loginType,
+					defaultClassImg : '${i_c_resroot}/training/mobile/images/thumbs/bj.gif',
+					defaultCourseImg : '${i_c_resroot}/training/mobile/images/thumbs/thumb4.jpg',
+					fixName : function(cont, len) {
+						var str = '' + cont;
+						var char_length = 0;
+						var result = '';
+						for (var i = 0; i < str.length; i++) {
+							var son_str = str.charAt(i);
+							encodeURI(son_str).length > 2 ? char_length += 1
+									: char_length += 0.5;
+							if (char_length > len) {
+								var sub_len = char_length == len ? i + 1 : i;
+								result = str.substr(0, sub_len);
+								break;
+							}
+						}
+						return char_length > len ? (result + "...")
+								: (char_length <= len / 2 ? (str + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+										: str);
+					}
+				}
+
+			});
+</script>

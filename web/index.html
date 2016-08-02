@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>测试界面</title>
+
+<script type="text/javascript" src="tina.js"></script>
+<style type="text/css">
+input {
+	height: 30px;
+	width: 100%;
+}
+</style>
+
+<script type="text/javascript">
+	//{"loginType":"1111"} 测试的时候可以模拟输入一下这个模拟一个用户。
+
+	//打开连接类型的可输入
+	//{"result":"1"}  模拟返回
+	function app_link(link) {
+		bridge.invoke('openview', {
+			'link' : link
+		}, function(response) {
+			alert(response.result);
+		});
+		alert(link);
+	}
+
+	//alert的处理
+	function app_alert(msg) {
+		alert(msg);
+	}
+
+	//选择类型的处理
+	//{"result":"2"}  模拟返回，返回的是位置
+	function app_select() {
+		bridge.invoke('select', {
+			'options' : '北京-上海-深圳-广州'
+		}, function(response) {
+			alert('选择的值' + response.result);
+		});
+	}
+
+	//确认取消的处理
+	//根据选择，系统自动返回的true，false
+	function app_confirm() {
+		var ret = confirm('确定要关闭吗？');
+		alert('选择的值' + ret);
+	}
+
+	//进入课程
+	//{"result":"1"}  模拟返回
+	function jump_course() {
+		bridge.invoke('opencourse', {
+			'courseId' : '课程id',
+			'imageUrl' : 'xxx.jpg',
+			'title' : '课程名称'
+		}, null);
+	}
+
+	//显示一下token
+	function show_token() {
+		alert('loginType=' + bridge.loginType);
+	}
+</script>
+
+</head>
+<body>
+	<input type="button" value="打开页面链接"
+		onclick="app_link('http://jggb.lms.demo.webtrn.cn/o/student/mobile/courseMarket.action')" />
+	<br />
+	<br />
+	<input type="button" value="处理alert" onclick="app_alert('处理alert');" />
+	<br />
+	<br />
+	<input type="button" value="处理多项选择框" onclick="app_select();" />
+	<br />
+	<br />
+	<input type="button" value="处理确定取消" onclick="app_confirm();" />
+	<br />
+	<br />
+	<input type="button" value="进入课程" onclick="jump_course();" />
+	<br />
+	<br />
+	<input type="button" value="显示token" onclick="show_token();" />
+	<br />
+	<br />
+</body>
+</html>
